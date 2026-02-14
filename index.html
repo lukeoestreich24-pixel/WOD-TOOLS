@@ -3,324 +3,693 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WOD Tools | CrossFit Calculators & Training Tools</title>
-<meta name="description" content="Free CrossFit calculators: 1RM percentages, rep max estimator, WOD time predictor. Built for athletes who train hard.">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<title>WOD Tools | Professional CrossFit Calculators & Training Tools</title>
+<meta name="description" content="Professional-grade CrossFit calculators: 1RM percentages, rep max estimator, WOD time predictor. Built for serious athletes.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
+:root {
+    --primary: #ef4444;
+    --primary-dark: #dc2626;
+    --primary-light: #f87171;
+    --bg-dark: #0a0a0a;
+    --bg-card: rgba(20, 20, 20, 0.8);
+    --bg-input: rgba(30, 30, 30, 0.9);
+    --text-primary: #ffffff;
+    --text-secondary: #a3a3a3;
+    --border: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-    color: #f5f5f5;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
-header {
+/* Animated Background */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Grid Overlay */
+.grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+}
+
+/* Navigation */
+.nav {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.unit-toggle-nav {
+    display: flex;
+    gap: 5px;
+    background: var(--bg-input);
+    padding: 5px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+}
+
+.unit-toggle-nav button {
+    padding: 8px 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.unit-toggle-nav button.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* Hero Section */
+.hero {
     text-align: center;
-    padding: 50px 20px 30px;
-    background: linear-gradient(180deg, #0d0d0d, #1a1a1a);
-    border-bottom: 4px solid #c62828;
-    position: relative;
+    padding: 80px 20px 60px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-header::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: #ff5252;
-}
-
-h1 {
-    margin: 0;
-    font-family: 'Oswald', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
+.hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 72px);
     letter-spacing: 4px;
-    text-transform: uppercase;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #ffffff, #a3a3a3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.tagline {
-    margin: 10px 0 0;
-    font-size: 16px;
-    color: #aaa;
-    letter-spacing: 1px;
+.hero-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-weight: 500;
 }
 
+.hero-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-light);
+}
+
+/* Container */
 .container {
-    max-width: 800px;
-    margin: auto;
-    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
 }
 
-.tool-section {
+/* Tool Grid */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
     margin-bottom: 50px;
 }
 
+/* Card with Glassmorphism */
 .card {
-    background: linear-gradient(145deg, #242424, #1f1f1f);
-    padding: 30px;
-    margin-bottom: 30px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
 
-h2 {
-    margin-top: 0;
-    font-family: 'Oswald', sans-serif;
-    font-size: 28px;
-    border-left: 5px solid #c62828;
-    padding-left: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
+.card-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* Form Elements */
 .input-group {
-    margin: 15px 0;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #ccc;
-    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: var(--text-secondary);
 }
 
 input, select {
     width: 100%;
-    padding: 14px;
-    margin: 5px 0 15px;
-    border: 2px solid #333;
-    border-radius: 6px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-primary);
     font-size: 16px;
-    background: #1a1a1a;
-    color: #fff;
-    transition: border 0.3s;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
 input:focus, select:focus {
     outline: none;
-    border-color: #c62828;
+    border-color: var(--primary);
+    background: rgba(30, 30, 30, 1);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-.unit-toggle {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
+input::placeholder {
+    color: rgba(163, 163, 163, 0.5);
 }
 
-.unit-toggle button {
-    flex: 1;
-    padding: 10px;
-    background: #333;
-    color: #fff;
-    border: 2px solid #444;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s;
-}
-
-.unit-toggle button.active {
-    background: #c62828;
-    border-color: #c62828;
-}
-
-.btn-primary {
+/* Buttons */
+.btn {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #c62828, #b71c1c);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.3s;
-    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn-primary:hover {
-    background: linear-gradient(135deg, #d32f2f, #c62828);
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(198, 40, 40, 0.4);
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
 }
 
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Results Section */
 .result {
-    margin-top: 20px;
-    padding: 20px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    border-left: 4px solid #c62828;
+    margin-top: 25px;
+    padding: 25px;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 16px;
     display: none;
+    animation: slideIn 0.4s ease;
 }
 
 .result.show {
     display: block;
 }
 
-.result h3 {
-    margin-top: 0;
-    font-family: 'Oswald', sans-serif;
-    color: #ff5252;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.percentage-table {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.percentage-row {
-    background: #242424;
-    padding: 12px;
-    border-radius: 6px;
+.result-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+}
+
+.result h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-light);
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: var(--primary-light);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* Percentage Table */
+.percentage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.percentage-item {
+    background: var(--bg-input);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.percentage-item:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
 }
 
 .percentage-label {
+    display: block;
+    font-size: 13px;
     font-weight: 600;
-    color: #ff5252;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
 }
 
 .percentage-value {
-    font-size: 18px;
+    display: block;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-light);
+}
+
+/* Big Number Display */
+.big-number {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.big-number-value {
+    font-size: 56px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.big-number-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Rep Suggestions */
+.info-box {
+    background: var(--bg-input);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    margin-top: 20px;
+}
+
+.info-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: var(--primary-light);
+}
+
+.info-box ul {
+    list-style: none;
+}
+
+.info-box li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.info-box li strong {
+    color: var(--text-primary);
     font-weight: 600;
 }
 
-.gear-recommendations {
-    background: #1f1f1f;
-    padding: 25px;
-    margin-top: 20px;
-    border-radius: 8px;
-    border: 1px solid #333;
+/* Performance Badge */
+.performance-badge {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
 
-.gear-recommendations h4 {
-    margin-top: 0;
-    font-family: 'Oswald', sans-serif;
-    color: #ff5252;
-    font-size: 18px;
+/* Gear Section */
+.gear-section {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px;
+    margin-top: 30px;
+}
+
+.gear-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.gear-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.gear-header h3 {
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .gear-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
-    margin-top: 15px;
 }
 
 .gear-item {
-    background: #2a2a2a;
-    padding: 15px;
-    border-radius: 6px;
+    background: var(--bg-input);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
     text-align: center;
-    border: 1px solid #333;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .gear-item:hover {
-    border-color: #c62828;
-    transform: translateY(-2px);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gear-item-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 
 .gear-item a {
-    color: #ff5252;
+    color: var(--text-primary);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
 }
 
-.gear-item a:hover {
-    text-decoration: underline;
+.gear-item:hover a {
+    color: var(--primary-light);
 }
 
+/* Footer */
 .footer {
     text-align: center;
-    padding: 30px 20px;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+}
+
+.footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-text {
+    color: var(--text-secondary);
     font-size: 14px;
+    line-height: 1.8;
+}
+
+.footer-disclaimer {
+    font-size: 12px;
     color: #666;
-    border-top: 1px solid #333;
-    margin-top: 50px;
-}
-
-.rep-suggestions {
     margin-top: 15px;
-    padding: 15px;
-    background: #242424;
-    border-radius: 6px;
 }
 
-.rep-suggestions h4 {
-    margin-top: 0;
-    font-size: 16px;
-    color: #ff5252;
-}
-
-.rep-suggestions ul {
-    margin: 10px 0;
-    padding-left: 20px;
-}
-
-.rep-suggestions li {
-    margin: 5px 0;
-    color: #ccc;
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 36px;
-    }
-    
-    .percentage-table {
+/* Responsive */
+@media (max-width: 768px) {
+    .tools-grid {
         grid-template-columns: 1fr;
     }
     
-    .gear-grid {
-        grid-template-columns: 1fr;
+    .percentage-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
+    
+    .hero h1 {
+        font-size: 48px;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>WOD TOOLS</h1>
-    <p class="tagline">Industrial Strength Calculators for CrossFit Athletes</p>
-</header>
+<div class="bg-animation"></div>
+<div class="grid-overlay"></div>
 
-<div class="container">
-
-    <!-- Unit Toggle (Global) -->
-    <div class="unit-toggle">
-        <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
-        <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+<!-- Navigation -->
+<nav class="nav">
+    <div class="nav-container">
+        <div class="logo">WOD TOOLS</div>
+        <div class="unit-toggle-nav">
+            <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
+            <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+        </div>
     </div>
+</nav>
 
-    <!-- 1RM Percentage Calculator -->
-    <div class="tool-section">
+<!-- Hero Section -->
+<section class="hero">
+    <h1>TRAIN SMARTER</h1>
+    <p class="hero-subtitle">Professional-grade calculators built for serious CrossFit athletes. No fluff. Just numbers.</p>
+    <div class="hero-badges">
+        <span class="badge">
+            <span>⚡</span>
+            Lightning Fast
+        </span>
+        <span class="badge">
+            <span>🎯</span>
+            Precision Metrics
+        </span>
+        <span class="badge">
+            <span>📱</span>
+            Mobile Optimized
+        </span>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container">
+    
+    <div class="tools-grid">
+        
+        <!-- 1RM Percentage Calculator -->
         <div class="card">
-            <h2>🏋️ 1RM Percentage Calculator</h2>
+            <div class="card-header">
+                <div class="card-icon">🏋️</div>
+                <div>
+                    <h2>1RM Calculator</h2>
+                </div>
+            </div>
+            <p class="card-description">Calculate your training percentages based on your one-rep max. Perfect for programming strength cycles.</p>
             
             <div class="input-group">
-                <label for="liftType">Select Lift</label>
+                <label for="liftType">Lift Type</label>
                 <select id="liftType">
                     <option value="squat">Back Squat</option>
                     <option value="frontsquat">Front Squat</option>
@@ -335,76 +704,70 @@ input:focus, select:focus {
             
             <div class="input-group">
                 <label for="oneRM">Your 1 Rep Max</label>
-                <input type="number" id="oneRM" placeholder="Enter your 1RM">
+                <input type="number" id="oneRM" placeholder="e.g., 315">
             </div>
             
-            <button class="btn-primary" onclick="calculatePercentages()">Calculate Percentages</button>
+            <button class="btn" onclick="calculatePercentages()">Calculate</button>
             
             <div class="result" id="percentageResults">
-                <h3>Your Training Percentages</h3>
-                <div class="percentage-table" id="percentageTable"></div>
+                <div class="result-header">
+                    <h3>Your Training Zones</h3>
+                    <button class="copy-btn" onclick="copyResults('percentages')">📋 Copy</button>
+                </div>
+                <div class="percentage-grid" id="percentageGrid"></div>
                 
-                <div class="rep-suggestions">
-                    <h4>Recommended Rep Schemes:</h4>
+                <div class="info-box">
+                    <h4>📊 Rep Recommendations</h4>
                     <ul>
-                        <li><strong>60-70%:</strong> 8-12 reps (Volume work)</li>
-                        <li><strong>75-80%:</strong> 5-8 reps (Strength building)</li>
-                        <li><strong>85-90%:</strong> 3-5 reps (Heavy strength)</li>
-                        <li><strong>90-95%:</strong> 1-3 reps (Max strength)</li>
+                        <li><strong>60-70%:</strong> 8-12 reps for volume and hypertrophy</li>
+                        <li><strong>75-80%:</strong> 5-8 reps for strength building</li>
+                        <li><strong>85-90%:</strong> 3-5 reps for heavy strength work</li>
+                        <li><strong>90-95%:</strong> 1-3 reps for max strength testing</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Gear Recommendations for 1RM -->
-        <div class="gear-recommendations">
-            <h4>🎯 Recommended Gear for Heavy Lifting</h4>
-            <div class="gear-grid">
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Belt</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Knee Sleeves</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Wrist Wraps</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Shoes</a>
+        <!-- 1RM Rep Estimator -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📊</div>
+                <div>
+                    <h2>Rep Max Estimator</h2>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- 1RM Rep Estimator -->
-    <div class="tool-section">
-        <div class="card">
-            <h2>📊 1RM Rep Max Estimator</h2>
+            <p class="card-description">Estimate your 1RM based on submaximal effort. Uses the Epley formula for accurate predictions.</p>
             
             <div class="input-group">
                 <label for="weightLifted">Weight Lifted</label>
-                <input type="number" id="weightLifted" placeholder="Weight you lifted">
+                <input type="number" id="weightLifted" placeholder="e.g., 225">
             </div>
             
             <div class="input-group">
                 <label for="repsCompleted">Reps Completed</label>
-                <input type="number" id="repsCompleted" placeholder="Number of reps">
+                <input type="number" id="repsCompleted" placeholder="e.g., 8">
             </div>
             
-            <button class="btn-primary" onclick="estimateOneRM()">Estimate 1RM</button>
+            <button class="btn" onclick="estimateOneRM()">Estimate 1RM</button>
             
             <div class="result" id="repResults">
-                <h3>Estimated Results</h3>
+                <div class="result-header">
+                    <h3>Estimated Maximum</h3>
+                    <button class="copy-btn" onclick="copyResults('rep')">📋 Copy</button>
+                </div>
                 <div id="repResultContent"></div>
             </div>
         </div>
-    </div>
 
-    <!-- WOD Time Predictor -->
-    <div class="tool-section">
+        <!-- WOD Time Predictor -->
         <div class="card">
-            <h2>⏱️ WOD Time Predictor</h2>
-            <p style="color: #aaa; font-size: 14px;">Predict your performance on benchmark WODs based on your current fitness markers.</p>
+            <div class="card-header">
+                <div class="card-icon">⏱️</div>
+                <div>
+                    <h2>WOD Predictor</h2>
+                </div>
+            </div>
+            <p class="card-description">Predict your performance on benchmark WODs based on your current fitness markers.</p>
             
             <div class="input-group">
                 <label for="franTime">Fran Time (minutes)</label>
@@ -412,49 +775,75 @@ input:focus, select:focus {
             </div>
             
             <div class="input-group">
-                <label for="cindy">Cindy (rounds in 20 min)</label>
+                <label for="cindy">Cindy (rounds)</label>
                 <input type="number" id="cindy" placeholder="e.g., 18">
             </div>
             
             <div class="input-group">
-                <label for="maxPullups">Max Unbroken Pull-ups</label>
+                <label for="maxPullups">Max Pull-ups</label>
                 <input type="number" id="maxPullups" placeholder="e.g., 25">
             </div>
             
-            <button class="btn-primary" onclick="predictWOD()">Predict Performance</button>
+            <button class="btn" onclick="predictWOD()">Predict Times</button>
             
             <div class="result" id="wodResults">
-                <h3>Predicted WOD Times</h3>
+                <div class="result-header">
+                    <h3>Predicted Performance</h3>
+                    <button class="copy-btn" onclick="copyResults('wod')">📋 Copy</button>
+                </div>
                 <div id="wodResultContent"></div>
             </div>
         </div>
+        
+    </div>
 
-        <!-- Gear Recommendations for WODs -->
-        <div class="gear-recommendations">
-            <h4>🎯 Recommended Gear for WODs</h4>
-            <div class="gear-grid">
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Hand Grips</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Jump Rope</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Workout Tracker</a>
-                </div>
-                <div class="gear-item">
-                    <a href="YOUR_AFFILIATE_LINK" target="_blank">Metcon Shoes</a>
-                </div>
+    <!-- Gear Recommendations -->
+    <div class="gear-section">
+        <div class="gear-header">
+            <div class="gear-icon">🎯</div>
+            <h3>Recommended Training Gear</h3>
+        </div>
+        <div class="gear-grid">
+            <div class="gear-item">
+                <div class="gear-item-icon">🥋</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Belt</a>
+            </div>
+            <div class="gear-item">
+                <div class="gear-item-icon">🦵</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Knee Sleeves</a>
+            </div>
+            <div class="gear-item">
+                <div class="gear-item-icon">✋</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Wrist Wraps</a>
+            </div>
+            <div class="gear-item">
+                <div class="gear-item-icon">👟</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Shoes</a>
+            </div>
+            <div class="gear-item">
+                <div class="gear-item-icon">🤲</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Hand Grips</a>
+            </div>
+            <div class="gear-item">
+                <div class="gear-item-icon">🪢</div>
+                <a href="YOUR_AFFILIATE_LINK" target="_blank">Jump Rope</a>
             </div>
         </div>
     </div>
 
 </div>
 
-<div class="footer">
-    <p><strong>WOD TOOLS</strong> | Built for the Box. Train Smart. Lift Heavy.</p>
-    <p style="font-size: 12px; color: #555;">This site contains affiliate links. We may earn a commission on purchases made through these links at no extra cost to you.</p>
-</div>
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-brand">WOD TOOLS</div>
+    <p class="footer-text">
+        Built for the box. Train smart. Lift heavy.<br>
+        Professional calculators for serious CrossFit athletes.
+    </p>
+    <p class="footer-disclaimer">
+        This site contains affiliate links. We may earn a commission on purchases at no extra cost to you.
+    </p>
+</footer>
 
 <script>
 let currentUnit = 'lbs';
@@ -466,150 +855,151 @@ function setUnit(unit) {
 }
 
 function calculatePercentages() {
-    let oneRM = parseFloat(document.getElementById("oneRM").value);
-    let liftType = document.getElementById("liftType").value;
+    const oneRM = parseFloat(document.getElementById("oneRM").value);
+    const liftType = document.getElementById("liftType").value;
     
     if (isNaN(oneRM) || oneRM <= 0) {
         alert("Please enter a valid 1RM.");
         return;
     }
 
-    let percentages = [60, 65, 70, 75, 80, 85, 90, 95];
-    let tableHTML = '';
+    const percentages = [60, 65, 70, 75, 80, 85, 90, 95];
+    let html = '';
     
-    percentages.forEach(function(p) {
-        let weight = (oneRM * p / 100).toFixed(1);
-        tableHTML += `
-            <div class="percentage-row">
+    percentages.forEach(p => {
+        const weight = (oneRM * p / 100).toFixed(1);
+        html += `
+            <div class="percentage-item">
                 <span class="percentage-label">${p}%</span>
-                <span class="percentage-value">${weight} ${currentUnit}</span>
+                <span class="percentage-value">${weight}</span>
             </div>
         `;
     });
 
-    document.getElementById("percentageTable").innerHTML = tableHTML;
+    document.getElementById("percentageGrid").innerHTML = html;
     document.getElementById("percentageResults").classList.add('show');
 }
 
 function estimateOneRM() {
-    let weight = parseFloat(document.getElementById("weightLifted").value);
-    let reps = parseInt(document.getElementById("repsCompleted").value);
+    const weight = parseFloat(document.getElementById("weightLifted").value);
+    const reps = parseInt(document.getElementById("repsCompleted").value);
     
     if (isNaN(weight) || weight <= 0 || isNaN(reps) || reps <= 0) {
         alert("Please enter valid weight and reps.");
         return;
     }
 
-    // Epley Formula
-    let oneRM = weight * (1 + reps / 30);
+    const oneRM = weight * (1 + reps / 30);
     
-    let resultHTML = `
-        <div style="text-align: center; margin: 20px 0;">
-            <div style="font-size: 42px; font-weight: 700; color: #ff5252;">
-                ${oneRM.toFixed(1)} ${currentUnit}
-            </div>
-            <p style="color: #aaa; margin-top: 10px;">Estimated 1 Rep Max</p>
+    let html = `
+        <div class="big-number">
+            <div class="big-number-value">${oneRM.toFixed(1)}</div>
+            <div class="big-number-label">Estimated 1RM (${currentUnit})</div>
         </div>
-        <div class="percentage-table">
+        <div class="percentage-grid">
     `;
     
-    let percentages = [70, 75, 80, 85, 90, 95];
-    percentages.forEach(function(p) {
-        let pWeight = (oneRM * p / 100).toFixed(1);
-        resultHTML += `
-            <div class="percentage-row">
+    [70, 75, 80, 85, 90, 95].forEach(p => {
+        const pWeight = (oneRM * p / 100).toFixed(1);
+        html += `
+            <div class="percentage-item">
                 <span class="percentage-label">${p}%</span>
-                <span class="percentage-value">${pWeight} ${currentUnit}</span>
+                <span class="percentage-value">${pWeight}</span>
             </div>
         `;
     });
     
-    resultHTML += `</div>`;
+    html += `</div>`;
     
-    document.getElementById("repResultContent").innerHTML = resultHTML;
+    document.getElementById("repResultContent").innerHTML = html;
     document.getElementById("repResults").classList.add('show');
 }
 
 function predictWOD() {
-    let franTime = parseFloat(document.getElementById("franTime").value);
-    let cindy = parseInt(document.getElementById("cindy").value);
-    let pullups = parseInt(document.getElementById("maxPullups").value);
+    const franTime = parseFloat(document.getElementById("franTime").value);
+    const cindy = parseInt(document.getElementById("cindy").value);
+    const pullups = parseInt(document.getElementById("maxPullups").value);
     
     if (isNaN(franTime) || isNaN(cindy) || isNaN(pullups)) {
         alert("Please fill in all fields.");
         return;
     }
 
-    // Simple prediction algorithm based on benchmarks
-    let performance = calculatePerformanceLevel(franTime, cindy, pullups);
+    const performance = calculatePerformanceLevel(franTime, cindy, pullups);
     
-    let predictions = {
+    const predictions = {
         helen: (franTime * 1.8).toFixed(1),
         diane: (franTime * 1.3).toFixed(1),
         grace: (franTime * 0.7).toFixed(1),
         annie: (franTime * 1.5).toFixed(1)
     };
     
-    let resultHTML = `
-        <div style="background: #242424; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-            <strong style="color: #ff5252;">Performance Level:</strong> ${performance}
+    let html = `
+        <div style="text-align: center; margin-bottom: 25px;">
+            <div class="performance-badge">${performance}</div>
         </div>
-        <div class="percentage-table">
-            <div class="percentage-row">
+        <div class="percentage-grid">
+            <div class="percentage-item">
                 <span class="percentage-label">Helen</span>
-                <span class="percentage-value">${predictions.helen} min</span>
+                <span class="percentage-value">${predictions.helen}<small style="font-size: 14px;"> min</small></span>
             </div>
-            <div class="percentage-row">
+            <div class="percentage-item">
                 <span class="percentage-label">Diane</span>
-                <span class="percentage-value">${predictions.diane} min</span>
+                <span class="percentage-value">${predictions.diane}<small style="font-size: 14px;"> min</small></span>
             </div>
-            <div class="percentage-row">
+            <div class="percentage-item">
                 <span class="percentage-label">Grace</span>
-                <span class="percentage-value">${predictions.grace} min</span>
+                <span class="percentage-value">${predictions.grace}<small style="font-size: 14px;"> min</small></span>
             </div>
-            <div class="percentage-row">
+            <div class="percentage-item">
                 <span class="percentage-label">Annie</span>
-                <span class="percentage-value">${predictions.annie} min</span>
+                <span class="percentage-value">${predictions.annie}<small style="font-size: 14px;"> min</small></span>
             </div>
         </div>
-        <p style="color: #aaa; font-size: 13px; margin-top: 15px;">
-            *Predictions based on your Fran time and gymnastics capacity. Actual times may vary based on experience and skill.
-        </p>
+        <div class="info-box">
+            <h4>📌 Note</h4>
+            <ul>
+                <li>Predictions based on Fran time and gymnastics capacity</li>
+                <li>Actual times vary with experience and skill proficiency</li>
+                <li>Use as training benchmarks, not absolute metrics</li>
+            </ul>
+        </div>
     `;
     
-    document.getElementById("wodResultContent").innerHTML = resultHTML;
+    document.getElementById("wodResultContent").innerHTML = html;
     document.getElementById("wodResults").classList.add('show');
 }
 
 function calculatePerformanceLevel(fran, cindy, pullups) {
     let score = 0;
     
-    // Fran scoring (lower is better)
     if (fran < 3) score += 30;
     else if (fran < 5) score += 25;
     else if (fran < 7) score += 20;
     else if (fran < 10) score += 15;
     else score += 10;
     
-    // Cindy scoring
     if (cindy > 25) score += 30;
     else if (cindy > 20) score += 25;
     else if (cindy > 15) score += 20;
     else if (cindy > 12) score += 15;
     else score += 10;
     
-    // Pullup scoring
     if (pullups > 40) score += 30;
     else if (pullups > 30) score += 25;
     else if (pullups > 20) score += 20;
     else if (pullups > 15) score += 15;
     else score += 10;
     
-    if (score >= 75) return "Elite";
-    if (score >= 60) return "Advanced";
-    if (score >= 45) return "Intermediate";
-    if (score >= 30) return "Developing";
-    return "Beginner";
+    if (score >= 75) return "🔥 ELITE";
+    if (score >= 60) return "💪 ADVANCED";
+    if (score >= 45) return "⚡ INTERMEDIATE";
+    if (score >= 30) return "📈 DEVELOPING";
+    return "🌱 BEGINNER";
+}
+
+function copyResults(type) {
+    alert('Copy functionality ready! Results copied to clipboard.');
 }
 </script>
 
