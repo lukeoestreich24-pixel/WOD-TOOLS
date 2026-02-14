@@ -120,11 +120,15 @@
             <a href="wod-database.html" class="nav-link active">WOD Database</a>
             <a href="tracker.html" class="nav-link">Tracker</a>
         </div>
+        <div class="unit-toggle-nav">
+            <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
+            <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+        </div>
     </div>
 </nav>
 
 <div class="container">
-    <h1 class="page-title">WOD Database</h1>
+    <h1 class="page-title">WOD DATABASE</h1>
     <p class="page-subtitle">Complete library of CrossFit benchmark workouts</p>
 
     <input type="text" class="search-box" id="searchBox" placeholder="Search workouts by name or movement...">
@@ -137,14 +141,62 @@
     </div>
 
     <div class="wod-grid" id="wodGrid"></div>
+
+    <!-- Subtle Gear Section -->
+    <div class="product-category" style="margin-top: 60px;">
+        <div class="category-header">
+            <h3>Essential WOD Equipment</h3>
+            <p>Gear up for your next benchmark</p>
+        </div>
+        <div class="product-grid">
+            <a href="https://amzn.to/4cueFiI" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">🤲</div>
+                <div class="product-info">
+                    <div class="product-name">Hand Grips</div>
+                    <div class="product-desc">Protect hands during high-rep pull-ups</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/4azS4yY" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">🪢</div>
+                <div class="product-info">
+                    <div class="product-name">Speed Rope</div>
+                    <div class="product-desc">Master double-unders in Annie</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/4kG65Qb" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">👟</div>
+                <div class="product-info">
+                    <div class="product-name">Training Shoes</div>
+                    <div class="product-desc">Versatile for all benchmark WODs</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/4rjbnUf" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">💆</div>
+                <div class="product-info">
+                    <div class="product-name">Foam Roller</div>
+                    <div class="product-desc">Recovery after brutal benchmarks</div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
 
 <footer class="footer">
     <div class="footer-brand">WOD TOOLS</div>
     <p class="footer-text">Built for the box. Train smart. Lift heavy.</p>
+    <p class="footer-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
 </footer>
 
 <script>
+let currentUnit = localStorage.getItem('unit') || 'lbs';
+
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem('unit', unit);
+    document.getElementById('lbsBtn').classList.toggle('active', unit === 'lbs');
+    document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
+}
+
 const wods = [
     // GIRLS
     {
@@ -328,7 +380,10 @@ document.getElementById('searchBox').addEventListener('input', (e) => {
     renderWODs(currentFilter, e.target.value);
 });
 
-renderWODs();
+document.addEventListener('DOMContentLoaded', () => {
+    setUnit(currentUnit);
+    renderWODs();
+});
 </script>
 
 </body>
