@@ -111,37 +111,101 @@
         </div>
     </div>
 
-    <!-- Gear Section -->
-    <div class="gear-section">
-        <div class="gear-header">
-            <div class="gear-icon">🎯</div>
-            <h3>Recommended Training Gear</h3>
-        </div>
-        <div class="gear-grid">
-            <div class="gear-item">
-                <div class="gear-item-icon">🥋</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Belt</a>
+    <!-- Subtle Gear Recommendations -->
+    <div class="subtle-gear-section">
+        <h2 class="section-title" style="margin-bottom: 15px;">Recommended Training Gear</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 16px;">
+            The equipment we use and trust for heavy training days
+        </p>
+        
+        <div class="product-categories">
+            
+            <!-- Lifting Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h3>For Heavy Lifts</h3>
+                    <p>Support and stability when it matters most</p>
+                </div>
+                <div class="product-grid">
+                    <a href="https://amzn.to/3MvFHf2" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">🥋</div>
+                        <div class="product-info">
+                            <div class="product-name">Lifting Belt</div>
+                            <div class="product-desc">Core support for max lifts</div>
+                        </div>
+                    </a>
+                    <a href="https://amzn.to/4az9JGT" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">🦵</div>
+                        <div class="product-info">
+                            <div class="product-name">Knee Sleeves</div>
+                            <div class="product-desc">7mm compression support</div>
+                        </div>
+                    </a>
+                    <a href="https://amzn.to/4awV7aP" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">✋</div>
+                        <div class="product-info">
+                            <div class="product-name">Wrist Wraps</div>
+                            <div class="product-desc">Stable overhead position</div>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div class="gear-item">
-                <div class="gear-item-icon">🦵</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Knee Sleeves</a>
+
+            <!-- Gymnastics Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h3>For High-Rep WODs</h3>
+                    <p>Protect your hands and improve efficiency</p>
+                </div>
+                <div class="product-grid">
+                    <a href="https://amzn.to/4tC9Fi9" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">🤲</div>
+                        <div class="product-info">
+                            <div class="product-name">Hand Grips</div>
+                            <div class="product-desc">Prevent tears on pull-ups</div>
+                        </div>
+                    </a>
+                    <a href="https://amzn.to/4ahqk38" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">🪢</div>
+                        <div class="product-info">
+                            <div class="product-name">Speed Rope</div>
+                            <div class="product-desc">Faster double-unders</div>
+                        </div>
+                    </a>
+                    <a href="https://amzn.to/4kG65Qb" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">👟</div>
+                        <div class="product-info">
+                            <div class="product-name">Training Shoes</div>
+                            <div class="product-desc">Stable for lifting & agile for WODs</div>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div class="gear-item">
-                <div class="gear-item-icon">✋</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Wrist Wraps</a>
+
+            <!-- Recovery Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h3>For Recovery</h3>
+                    <p>Train harder by recovering smarter</p>
+                </div>
+                <div class="product-grid">
+                    <a href="https://amzn.to/4rjbnUf" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">💆</div>
+                        <div class="product-info">
+                            <div class="product-name">Foam Roller</div>
+                            <div class="product-desc">Deep tissue mobility work</div>
+                        </div>
+                    </a>
+                    <a href="https://amzn.to/3OIMhzx" target="_blank" rel="noopener" class="product-card">
+                        <div class="product-icon">🔗</div>
+                        <div class="product-info">
+                            <div class="product-name">Resistance Bands</div>
+                            <div class="product-desc">Warm-ups & rehab exercises</div>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div class="gear-item">
-                <div class="gear-item-icon">👟</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Lifting Shoes</a>
-            </div>
-            <div class="gear-item">
-                <div class="gear-item-icon">🤲</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Hand Grips</a>
-            </div>
-            <div class="gear-item">
-                <div class="gear-item-icon">🪢</div>
-                <a href="YOUR_AFFILIATE_LINK" target="_blank">Jump Rope</a>
-            </div>
+
         </div>
     </div>
 </div>
@@ -154,7 +218,7 @@
         Professional tools for serious CrossFit athletes.
     </p>
     <p class="footer-disclaimer">
-        This site contains affiliate links. We may earn a commission on purchases at no extra cost to you.
+        As an Amazon Associate, we earn from qualifying purchases at no extra cost to you.
     </p>
 </footer>
 
@@ -168,7 +232,6 @@ function setUnit(unit) {
     document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setUnit(currentUnit);
 });
