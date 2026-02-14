@@ -3,640 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WOD Tools | Professional CrossFit Calculators & Training Tools</title>
-<meta name="description" content="Professional-grade CrossFit calculators: 1RM percentages, rep max estimator, WOD time predictor. Built for serious athletes.">
+<title>WOD Tools | Professional CrossFit Training Platform</title>
+<meta name="description" content="Complete CrossFit training platform with calculators, WOD database, and performance tracking.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
-<style>
-:root {
-    --primary: #ef4444;
-    --primary-dark: #dc2626;
-    --primary-light: #f87171;
-    --bg-dark: #0a0a0a;
-    --bg-card: rgba(20, 20, 20, 0.8);
-    --bg-input: rgba(30, 30, 30, 0.9);
-    --text-primary: #ffffff;
-    --text-secondary: #a3a3a3;
-    --border: rgba(255, 255, 255, 0.1);
-    --shadow: rgba(0, 0, 0, 0.5);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-/* Animated Background */
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Grid Overlay */
-.grid-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.3;
-}
-
-/* Navigation */
-.nav {
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    letter-spacing: 3px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.unit-toggle-nav {
-    display: flex;
-    gap: 5px;
-    background: var(--bg-input);
-    padding: 5px;
-    border-radius: 50px;
-    border: 1px solid var(--border);
-}
-
-.unit-toggle-nav button {
-    padding: 8px 20px;
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.unit-toggle-nav button.active {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-}
-
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 80px 20px 60px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.hero h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 8vw, 72px);
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #ffffff, #a3a3a3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: var(--text-secondary);
-    margin-bottom: 30px;
-    font-weight: 500;
-}
-
-.hero-badges {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary-light);
-}
-
-/* Container */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-}
-
-/* Tool Grid */
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
-}
-
-/* Card with Glassmorphism */
-.card {
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 35px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--primary-light));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(239, 68, 68, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.card:hover::before {
-    opacity: 1;
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.card-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
-}
-
-.card h2 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.card-description {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-/* Form Elements */
-.input-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-secondary);
-}
-
-input, select {
-    width: 100%;
-    padding: 14px 16px;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text-primary);
-    font-size: 16px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(30, 30, 30, 1);
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-input::placeholder {
-    color: rgba(163, 163, 163, 0.5);
-}
-
-/* Buttons */
-.btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
-}
-
-.btn:hover::before {
-    left: 100%;
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-/* Results Section */
-.result {
-    margin-top: 25px;
-    padding: 25px;
-    background: rgba(239, 68, 68, 0.05);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 16px;
-    display: none;
-    animation: slideIn 0.4s ease;
-}
-
-.result.show {
-    display: block;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.result-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.result h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--primary-light);
-}
-
-.copy-btn {
-    padding: 8px 16px;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 8px;
-    color: var(--primary-light);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.copy-btn:hover {
-    background: rgba(239, 68, 68, 0.2);
-}
-
-/* Percentage Table */
-.percentage-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.percentage-item {
-    background: var(--bg-input);
-    padding: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.percentage-item:hover {
-    border-color: var(--primary);
-    transform: scale(1.05);
-}
-
-.percentage-label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.percentage-value {
-    display: block;
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--primary-light);
-}
-
-/* Big Number Display */
-.big-number {
-    text-align: center;
-    margin: 25px 0;
-}
-
-.big-number-value {
-    font-size: 56px;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-}
-
-.big-number-label {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-top: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Rep Suggestions */
-.info-box {
-    background: var(--bg-input);
-    padding: 20px;
-    border-radius: 12px;
-    border-left: 4px solid var(--primary);
-    margin-top: 20px;
-}
-
-.info-box h4 {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-    color: var(--primary-light);
-}
-
-.info-box ul {
-    list-style: none;
-}
-
-.info-box li {
-    padding: 8px 0;
-    color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.info-box li strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-/* Performance Badge */
-.performance-badge {
-    display: inline-block;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 50px;
-    font-size: 18px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
-}
-
-/* Gear Section */
-.gear-section {
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 35px;
-    margin-top: 30px;
-}
-
-.gear-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.gear-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
-
-.gear-header h3 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.gear-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.gear-item {
-    background: var(--bg-input);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.gear-item:hover {
-    border-color: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.gear-item-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.gear-item a {
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.gear-item:hover a {
-    color: var(--primary-light);
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 1px solid var(--border);
-    margin-top: 60px;
-}
-
-.footer-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.footer-text {
-    color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.8;
-}
-
-.footer-disclaimer {
-    font-size: 12px;
-    color: #666;
-    margin-top: 15px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .tools-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .percentage-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .hero h1 {
-        font-size: 48px;
-    }
-    
-    .nav-container {
-        flex-direction: column;
-        gap: 20px;
-    }
-}
-
-/* Loading Animation */
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: var(--primary);
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
 <div class="bg-animation"></div>
@@ -645,7 +16,12 @@ input::placeholder {
 <!-- Navigation -->
 <nav class="nav">
     <div class="nav-container">
-        <div class="logo">WOD TOOLS</div>
+        <a href="index.html" class="logo">WOD TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="wod-database.html" class="nav-link">WOD Database</a>
+            <a href="tracker.html" class="nav-link">Tracker</a>
+        </div>
         <div class="unit-toggle-nav">
             <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
             <button id="kgBtn" onclick="setUnit('kg')">KG</button>
@@ -653,151 +29,89 @@ input::placeholder {
     </div>
 </nav>
 
-<!-- Hero Section -->
+<!-- Hero -->
 <section class="hero">
     <h1>TRAIN SMARTER</h1>
-    <p class="hero-subtitle">Professional-grade calculators built for serious CrossFit athletes. No fluff. Just numbers.</p>
+    <p class="hero-subtitle">The complete CrossFit training platform. Track PRs, calculate percentages, and dominate benchmark WODs.</p>
     <div class="hero-badges">
-        <span class="badge">
-            <span>⚡</span>
-            Lightning Fast
-        </span>
-        <span class="badge">
-            <span>🎯</span>
-            Precision Metrics
-        </span>
-        <span class="badge">
-            <span>📱</span>
-            Mobile Optimized
-        </span>
+        <span class="badge"><span>⚡</span> Lightning Fast</span>
+        <span class="badge"><span>🎯</span> Precision Metrics</span>
+        <span class="badge"><span>📱</span> Mobile Optimized</span>
+        <span class="badge"><span>💾</span> Save Your PRs</span>
     </div>
 </section>
 
-<!-- Main Content -->
+<!-- Tools Grid -->
 <div class="container">
+    <h2 class="section-title">Training Calculators</h2>
     
     <div class="tools-grid">
         
-        <!-- 1RM Percentage Calculator -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon">🏋️</div>
-                <div>
-                    <h2>1RM Calculator</h2>
-                </div>
-            </div>
-            <p class="card-description">Calculate your training percentages based on your one-rep max. Perfect for programming strength cycles.</p>
-            
-            <div class="input-group">
-                <label for="liftType">Lift Type</label>
-                <select id="liftType">
-                    <option value="squat">Back Squat</option>
-                    <option value="frontsquat">Front Squat</option>
-                    <option value="deadlift">Deadlift</option>
-                    <option value="bench">Bench Press</option>
-                    <option value="clean">Clean</option>
-                    <option value="snatch">Snatch</option>
-                    <option value="jerk">Jerk</option>
-                    <option value="overhead">Overhead Press</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="oneRM">Your 1 Rep Max</label>
-                <input type="number" id="oneRM" placeholder="e.g., 315">
-            </div>
-            
-            <button class="btn" onclick="calculatePercentages()">Calculate</button>
-            
-            <div class="result" id="percentageResults">
-                <div class="result-header">
-                    <h3>Your Training Zones</h3>
-                    <button class="copy-btn" onclick="copyResults('percentages')">📋 Copy</button>
-                </div>
-                <div class="percentage-grid" id="percentageGrid"></div>
-                
-                <div class="info-box">
-                    <h4>📊 Rep Recommendations</h4>
-                    <ul>
-                        <li><strong>60-70%:</strong> 8-12 reps for volume and hypertrophy</li>
-                        <li><strong>75-80%:</strong> 5-8 reps for strength building</li>
-                        <li><strong>85-90%:</strong> 3-5 reps for heavy strength work</li>
-                        <li><strong>90-95%:</strong> 1-3 reps for max strength testing</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <a href="1rm-calculator.html" class="tool-card">
+            <div class="tool-icon">🏋️</div>
+            <h3>1RM Calculator</h3>
+            <p>Calculate training percentages based on your one-rep max for any lift.</p>
+            <span class="tool-arrow">→</span>
+        </a>
 
-        <!-- 1RM Rep Estimator -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon">📊</div>
-                <div>
-                    <h2>Rep Max Estimator</h2>
-                </div>
-            </div>
-            <p class="card-description">Estimate your 1RM based on submaximal effort. Uses the Epley formula for accurate predictions.</p>
-            
-            <div class="input-group">
-                <label for="weightLifted">Weight Lifted</label>
-                <input type="number" id="weightLifted" placeholder="e.g., 225">
-            </div>
-            
-            <div class="input-group">
-                <label for="repsCompleted">Reps Completed</label>
-                <input type="number" id="repsCompleted" placeholder="e.g., 8">
-            </div>
-            
-            <button class="btn" onclick="estimateOneRM()">Estimate 1RM</button>
-            
-            <div class="result" id="repResults">
-                <div class="result-header">
-                    <h3>Estimated Maximum</h3>
-                    <button class="copy-btn" onclick="copyResults('rep')">📋 Copy</button>
-                </div>
-                <div id="repResultContent"></div>
-            </div>
-        </div>
+        <a href="rep-estimator.html" class="tool-card">
+            <div class="tool-icon">📊</div>
+            <h3>Rep Max Estimator</h3>
+            <p>Estimate your 1RM from submaximal lifts using the Epley formula.</p>
+            <span class="tool-arrow">→</span>
+        </a>
 
-        <!-- WOD Time Predictor -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon">⏱️</div>
-                <div>
-                    <h2>WOD Predictor</h2>
-                </div>
-            </div>
-            <p class="card-description">Predict your performance on benchmark WODs based on your current fitness markers.</p>
-            
-            <div class="input-group">
-                <label for="franTime">Fran Time (minutes)</label>
-                <input type="number" step="0.1" id="franTime" placeholder="e.g., 5.5">
-            </div>
-            
-            <div class="input-group">
-                <label for="cindy">Cindy (rounds)</label>
-                <input type="number" id="cindy" placeholder="e.g., 18">
-            </div>
-            
-            <div class="input-group">
-                <label for="maxPullups">Max Pull-ups</label>
-                <input type="number" id="maxPullups" placeholder="e.g., 25">
-            </div>
-            
-            <button class="btn" onclick="predictWOD()">Predict Times</button>
-            
-            <div class="result" id="wodResults">
-                <div class="result-header">
-                    <h3>Predicted Performance</h3>
-                    <button class="copy-btn" onclick="copyResults('wod')">📋 Copy</button>
-                </div>
-                <div id="wodResultContent"></div>
-            </div>
-        </div>
-        
+        <a href="wod-predictor.html" class="tool-card">
+            <div class="tool-icon">⏱️</div>
+            <h3>WOD Time Predictor</h3>
+            <p>Predict performance on benchmark WODs based on fitness markers.</p>
+            <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="wod-database.html" class="tool-card">
+            <div class="tool-icon">📚</div>
+            <h3>WOD Database</h3>
+            <p>Complete library of Girls, Heroes, and Open benchmark workouts.</p>
+            <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="tracker.html" class="tool-card">
+            <div class="tool-icon">📈</div>
+            <h3>Performance Tracker</h3>
+            <p>Track PRs across all lifts, gymnastics movements, and benchmark WODs.</p>
+            <span class="tool-arrow">→</span>
+        </a>
+
     </div>
 
-    <!-- Gear Recommendations -->
+    <!-- Features Section -->
+    <div class="features-section">
+        <h2 class="section-title">Why WOD Tools?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h4>Precision Training</h4>
+                <p>Calculate exact percentages for periodized programming</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h4>Track Progress</h4>
+                <p>Log PRs and visualize strength gains over time</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h4>Benchmark Database</h4>
+                <p>Complete library of CrossFit benchmark workouts</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💪</div>
+                <h4>Mobile First</h4>
+                <p>Use in the gym on any device, anywhere</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gear Section -->
     <div class="gear-section">
         <div class="gear-header">
             <div class="gear-icon">🎯</div>
@@ -830,7 +144,6 @@ input::placeholder {
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- Footer -->
@@ -838,7 +151,7 @@ input::placeholder {
     <div class="footer-brand">WOD TOOLS</div>
     <p class="footer-text">
         Built for the box. Train smart. Lift heavy.<br>
-        Professional calculators for serious CrossFit athletes.
+        Professional tools for serious CrossFit athletes.
     </p>
     <p class="footer-disclaimer">
         This site contains affiliate links. We may earn a commission on purchases at no extra cost to you.
@@ -846,161 +159,19 @@ input::placeholder {
 </footer>
 
 <script>
-let currentUnit = 'lbs';
+let currentUnit = localStorage.getItem('unit') || 'lbs';
 
 function setUnit(unit) {
     currentUnit = unit;
+    localStorage.setItem('unit', unit);
     document.getElementById('lbsBtn').classList.toggle('active', unit === 'lbs');
     document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
 }
 
-function calculatePercentages() {
-    const oneRM = parseFloat(document.getElementById("oneRM").value);
-    const liftType = document.getElementById("liftType").value;
-    
-    if (isNaN(oneRM) || oneRM <= 0) {
-        alert("Please enter a valid 1RM.");
-        return;
-    }
-
-    const percentages = [60, 65, 70, 75, 80, 85, 90, 95];
-    let html = '';
-    
-    percentages.forEach(p => {
-        const weight = (oneRM * p / 100).toFixed(1);
-        html += `
-            <div class="percentage-item">
-                <span class="percentage-label">${p}%</span>
-                <span class="percentage-value">${weight}</span>
-            </div>
-        `;
-    });
-
-    document.getElementById("percentageGrid").innerHTML = html;
-    document.getElementById("percentageResults").classList.add('show');
-}
-
-function estimateOneRM() {
-    const weight = parseFloat(document.getElementById("weightLifted").value);
-    const reps = parseInt(document.getElementById("repsCompleted").value);
-    
-    if (isNaN(weight) || weight <= 0 || isNaN(reps) || reps <= 0) {
-        alert("Please enter valid weight and reps.");
-        return;
-    }
-
-    const oneRM = weight * (1 + reps / 30);
-    
-    let html = `
-        <div class="big-number">
-            <div class="big-number-value">${oneRM.toFixed(1)}</div>
-            <div class="big-number-label">Estimated 1RM (${currentUnit})</div>
-        </div>
-        <div class="percentage-grid">
-    `;
-    
-    [70, 75, 80, 85, 90, 95].forEach(p => {
-        const pWeight = (oneRM * p / 100).toFixed(1);
-        html += `
-            <div class="percentage-item">
-                <span class="percentage-label">${p}%</span>
-                <span class="percentage-value">${pWeight}</span>
-            </div>
-        `;
-    });
-    
-    html += `</div>`;
-    
-    document.getElementById("repResultContent").innerHTML = html;
-    document.getElementById("repResults").classList.add('show');
-}
-
-function predictWOD() {
-    const franTime = parseFloat(document.getElementById("franTime").value);
-    const cindy = parseInt(document.getElementById("cindy").value);
-    const pullups = parseInt(document.getElementById("maxPullups").value);
-    
-    if (isNaN(franTime) || isNaN(cindy) || isNaN(pullups)) {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    const performance = calculatePerformanceLevel(franTime, cindy, pullups);
-    
-    const predictions = {
-        helen: (franTime * 1.8).toFixed(1),
-        diane: (franTime * 1.3).toFixed(1),
-        grace: (franTime * 0.7).toFixed(1),
-        annie: (franTime * 1.5).toFixed(1)
-    };
-    
-    let html = `
-        <div style="text-align: center; margin-bottom: 25px;">
-            <div class="performance-badge">${performance}</div>
-        </div>
-        <div class="percentage-grid">
-            <div class="percentage-item">
-                <span class="percentage-label">Helen</span>
-                <span class="percentage-value">${predictions.helen}<small style="font-size: 14px;"> min</small></span>
-            </div>
-            <div class="percentage-item">
-                <span class="percentage-label">Diane</span>
-                <span class="percentage-value">${predictions.diane}<small style="font-size: 14px;"> min</small></span>
-            </div>
-            <div class="percentage-item">
-                <span class="percentage-label">Grace</span>
-                <span class="percentage-value">${predictions.grace}<small style="font-size: 14px;"> min</small></span>
-            </div>
-            <div class="percentage-item">
-                <span class="percentage-label">Annie</span>
-                <span class="percentage-value">${predictions.annie}<small style="font-size: 14px;"> min</small></span>
-            </div>
-        </div>
-        <div class="info-box">
-            <h4>📌 Note</h4>
-            <ul>
-                <li>Predictions based on Fran time and gymnastics capacity</li>
-                <li>Actual times vary with experience and skill proficiency</li>
-                <li>Use as training benchmarks, not absolute metrics</li>
-            </ul>
-        </div>
-    `;
-    
-    document.getElementById("wodResultContent").innerHTML = html;
-    document.getElementById("wodResults").classList.add('show');
-}
-
-function calculatePerformanceLevel(fran, cindy, pullups) {
-    let score = 0;
-    
-    if (fran < 3) score += 30;
-    else if (fran < 5) score += 25;
-    else if (fran < 7) score += 20;
-    else if (fran < 10) score += 15;
-    else score += 10;
-    
-    if (cindy > 25) score += 30;
-    else if (cindy > 20) score += 25;
-    else if (cindy > 15) score += 20;
-    else if (cindy > 12) score += 15;
-    else score += 10;
-    
-    if (pullups > 40) score += 30;
-    else if (pullups > 30) score += 25;
-    else if (pullups > 20) score += 20;
-    else if (pullups > 15) score += 15;
-    else score += 10;
-    
-    if (score >= 75) return "🔥 ELITE";
-    if (score >= 60) return "💪 ADVANCED";
-    if (score >= 45) return "⚡ INTERMEDIATE";
-    if (score >= 30) return "📈 DEVELOPING";
-    return "🌱 BEGINNER";
-}
-
-function copyResults(type) {
-    alert('Copy functionality ready! Results copied to clipboard.');
-}
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    setUnit(currentUnit);
+});
 </script>
 
 </body>
