@@ -1,0 +1,345 @@
+/* Add to your existing styles.css file */
+
+/* Calculator Card */
+.calculator-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+}
+
+.predictor-intro {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.predictor-intro h3 {
+    color: var(--primary-light);
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.predictor-intro p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Subtle Product Sections */
+.subtle-gear-section {
+    margin: 80px 0;
+}
+
+.product-categories {
+    display: grid;
+    gap: 50px;
+}
+
+.product-category {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px;
+}
+
+.category-header {
+    margin-bottom: 25px;
+}
+
+.category-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.category-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.product-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.product-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.product-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Inline Recommendations (Contextual) */
+.inline-recommendation {
+    margin-top: 30px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.02));
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.recommendation-content h4 {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.recommendation-content p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.inline-rec-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.inline-rec-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.inline-rec-btn.secondary {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--primary-light);
+}
+
+.inline-rec-btn.secondary:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* Results Section */
+.result {
+    display: none;
+    margin-top: 30px;
+    animation: slideIn 0.4s ease;
+}
+
+.result.show {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.result h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-light);
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: var(--primary-light);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* Percentage Grid */
+.percentage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.percentage-item {
+    background: var(--bg-input);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.percentage-item:hover {
+    border-color: var(--primary);
+    transform: scale(1.03);
+}
+
+.percentage-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.percentage-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary-light);
+}
+
+/* Big Number Display */
+.big-number {
+    text-align: center;
+    margin: 30px 0;
+    padding: 30px;
+    background: rgba(239, 68, 68, 0.05);
+    border-radius: 16px;
+}
+
+.big-number-value {
+    font-size: 64px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.big-number-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Info Card */
+.info-card {
+    background: var(--bg-input);
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    margin-top: 25px;
+}
+
+.info-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: var(--primary-light);
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card li {
+    padding: 10px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.info-card li:last-child {
+    border-bottom: none;
+}
+
+.info-card li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Input Grid */
+.input-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-card {
+        flex-direction: row;
+    }
+    
+    .percentage-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .big-number-value {
+        font-size: 48px;
+    }
+}
