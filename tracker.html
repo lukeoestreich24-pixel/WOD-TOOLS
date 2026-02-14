@@ -12,6 +12,7 @@
     gap: 10px;
     margin-bottom: 30px;
     border-bottom: 2px solid var(--border);
+    overflow-x: auto;
 }
 
 .tab-btn {
@@ -23,6 +24,7 @@
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: all 0.3s;
+    white-space: nowrap;
 }
 
 .tab-btn.active {
@@ -143,11 +145,15 @@
             <a href="wod-database.html" class="nav-link">WOD Database</a>
             <a href="tracker.html" class="nav-link active">Tracker</a>
         </div>
+        <div class="unit-toggle-nav">
+            <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
+            <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+        </div>
     </div>
 </nav>
 
 <div class="container">
-    <h1 class="page-title">Performance Tracker</h1>
+    <h1 class="page-title">PERFORMANCE TRACKER</h1>
     <p class="page-subtitle">Track your PRs across lifts, gymnastics, and benchmark WODs</p>
 
     <div class="tracker-tabs">
@@ -159,7 +165,7 @@
     <!-- LIFTS TAB -->
     <div id="lifts" class="tab-content active">
         <div class="pr-form">
-            <h3>Log Lifting PR</h3>
+            <h3 style="margin-bottom: 20px;">Log Lifting PR</h3>
             <div class="form-row">
                 <div class="input-group">
                     <label>Movement</label>
@@ -195,7 +201,7 @@
     <!-- GYMNASTICS TAB -->
     <div id="gymnastics" class="tab-content">
         <div class="pr-form">
-            <h3>Log Gymnastics PR</h3>
+            <h3 style="margin-bottom: 20px;">Log Gymnastics PR</h3>
             <div class="form-row">
                 <div class="input-group">
                     <label>Movement</label>
@@ -229,7 +235,7 @@
     <!-- WODS TAB -->
     <div id="wods" class="tab-content">
         <div class="pr-form">
-            <h3>Log Benchmark WOD PR</h3>
+            <h3 style="margin-bottom: 20px;">Log Benchmark WOD PR</h3>
             <div class="form-row">
                 <div class="input-group">
                     <label>WOD Name</label>
@@ -262,17 +268,64 @@
         <div class="pr-list" id="wodsList"></div>
     </div>
 
+    <!-- Subtle Gear Recommendations -->
+    <div class="product-category" style="margin-top: 60px;">
+        <div class="category-header">
+            <h3>Upgrade Your Training</h3>
+            <p>Quality gear for serious athletes</p>
+        </div>
+        <div class="product-grid">
+            <a href="https://amzn.to/4bQhvhT" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">🥋</div>
+                <div class="product-info">
+                    <div class="product-name">Premium Lifting Belt</div>
+                    <div class="product-desc">Support for heavy squat days</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/4ty0z6h" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">🦵</div>
+                <div class="product-info">
+                    <div class="product-name">Heavy Duty Knee Sleeves</div>
+                    <div class="product-desc">Compression for max lifts</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/4kFdI9u" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">🤲</div>
+                <div class="product-info">
+                    <div class="product-name">Carbon Hand Grips</div>
+                    <div class="product-desc">Prevent tears, stay moving</div>
+                </div>
+            </a>
+            <a href="https://amzn.to/3Ok4qne" target="_blank" rel="noopener" class="product-card">
+                <div class="product-icon">💆</div>
+                <div class="product-info">
+                    <div class="product-name">Massage Roller</div>
+                    <div class="product-desc">Recovery between sessions</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
 </div>
 
 <footer class="footer">
     <div class="footer-brand">WOD TOOLS</div>
     <p class="footer-text">Built for the box. Train smart. Lift heavy.</p>
+    <p class="footer-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
 </footer>
 
 <script>
+let currentUnit = localStorage.getItem('unit') || 'lbs';
 let lifts = JSON.parse(localStorage.getItem('lifts')) || [];
 let gymnastics = JSON.parse(localStorage.getItem('gymnastics')) || [];
 let wods = JSON.parse(localStorage.getItem('wods')) || [];
+
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem('unit', unit);
+    document.getElementById('lbsBtn').classList.toggle('active', unit === 'lbs');
+    document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
+}
 
 function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -363,7 +416,7 @@ function renderLifts() {
                 <h4>${lift.movement}</h4>
                 <p>${new Date(lift.date).toLocaleDateString()}</p>
             </div>
-            <div class="pr-value">${lift.weight} lbs</div>
+            <div class="pr-value">${lift.weight} ${currentUnit}</div>
             <button class="delete-btn" onclick="deletePR('lift', ${lift.id})">Delete</button>
         </div>
     `).join('');
@@ -407,8 +460,8 @@ function renderWods() {
     `).join('');
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    setUnit(currentUnit);
     document.getElementById('liftDate').valueAsDate = new Date();
     document.getElementById('gymDate').valueAsDate = new Date();
     document.getElementById('wodDate').valueAsDate = new Date();
