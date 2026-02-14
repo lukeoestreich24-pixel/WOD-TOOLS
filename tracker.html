@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Tracker | Track Your CrossFit PRs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.tracker-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.pr-form {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+}
+
+.pr-list {
+    display: grid;
+    gap: 15px;
+}
+
+.pr-item {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.pr-item:hover {
+    border-color: var(--primary);
+}
+
+.pr-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: var(--primary-light);
+}
+
+.pr-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.pr-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.delete-btn {
+    padding: 8px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delete-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .pr-item {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-animation"></div>
+<div class="grid-overlay"></div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="index.html" class="logo">WOD TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="wod-database.html" class="nav-link">WOD Database</a>
+            <a href="tracker.html" class="nav-link active">Tracker</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="page-title">Performance Tracker</h1>
+    <p class="page-subtitle">Track your PRs across lifts, gymnastics, and benchmark WODs</p>
+
+    <div class="tracker-tabs">
+        <button class="tab-btn active" onclick="switchTab('lifts')">💪 Lifts</button>
+        <button class="tab-btn" onclick="switchTab('gymnastics')">🤸 Gymnastics</button>
+        <button class="tab-btn" onclick="switchTab('wods')">⏱️ Benchmark WODs</button>
+    </div>
+
+    <!-- LIFTS TAB -->
+    <div id="lifts" class="tab-content active">
+        <div class="pr-form">
+            <h3>Log Lifting PR</h3>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Movement</label>
+                    <select id="liftMovement">
+                        <option>Back Squat</option>
+                        <option>Front Squat</option>
+                        <option>Deadlift</option>
+                        <option>Bench Press</option>
+                        <option>Overhead Press</option>
+                        <option>Clean</option>
+                        <option>Snatch</option>
+                        <option>Clean & Jerk</option>
+                        <option>Jerk</option>
+                        <option>Push Press</option>
+                        <option>Power Clean</option>
+                        <option>Power Snatch</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Weight</label>
+                    <input type="number" id="liftWeight" placeholder="315">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="liftDate">
+                </div>
+                <button class="btn" onclick="addLiftPR()">Add PR</button>
+            </div>
+        </div>
+        <div class="pr-list" id="liftsList"></div>
+    </div>
+
+    <!-- GYMNASTICS TAB -->
+    <div id="gymnastics" class="tab-content">
+        <div class="pr-form">
+            <h3>Log Gymnastics PR</h3>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Movement</label>
+                    <select id="gymMovement">
+                        <option>Pull-ups (Max Unbroken)</option>
+                        <option>Muscle-ups (Max Unbroken)</option>
+                        <option>Handstand Push-ups</option>
+                        <option>Handstand Walk (feet)</option>
+                        <option>Pistols (Max Unbroken)</option>
+                        <option>Toes-to-Bar</option>
+                        <option>Double-unders (Max Unbroken)</option>
+                        <option>Ring Dips</option>
+                        <option>Bar Muscle-ups</option>
+                        <option>Chest-to-Bar Pull-ups</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Reps/Distance</label>
+                    <input type="number" id="gymReps" placeholder="50">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="gymDate">
+                </div>
+                <button class="btn" onclick="addGymPR()">Add PR</button>
+            </div>
+        </div>
+        <div class="pr-list" id="gymList"></div>
+    </div>
+
+    <!-- WODS TAB -->
+    <div id="wods" class="tab-content">
+        <div class="pr-form">
+            <h3>Log Benchmark WOD PR</h3>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>WOD Name</label>
+                    <select id="wodName">
+                        <option>Fran</option>
+                        <option>Grace</option>
+                        <option>Helen</option>
+                        <option>Diane</option>
+                        <option>Karen</option>
+                        <option>Cindy</option>
+                        <option>Nancy</option>
+                        <option>Annie</option>
+                        <option>Murph</option>
+                        <option>DT</option>
+                        <option>Jackie</option>
+                        <option>Elizabeth</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Time/Rounds</label>
+                    <input type="text" id="wodTime" placeholder="5:30 or 18 rds">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="wodDate">
+                </div>
+                <button class="btn" onclick="addWodPR()">Add PR</button>
+            </div>
+        </div>
+        <div class="pr-list" id="wodsList"></div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="footer-brand">WOD TOOLS</div>
+    <p class="footer-text">Built for the box. Train smart. Lift heavy.</p>
+</footer>
+
+<script>
+let lifts = JSON.parse(localStorage.getItem('lifts')) || [];
+let gymnastics = JSON.parse(localStorage.getItem('gymnastics')) || [];
+let wods = JSON.parse(localStorage.getItem('wods')) || [];
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab).classList.add('active');
+}
+
+function addLiftPR() {
+    const movement = document.getElementById('liftMovement').value;
+    const weight = document.getElementById('liftWeight').value;
+    const date = document.getElementById('liftDate').value;
+    
+    if (!weight || !date) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    lifts.push({ movement, weight, date, id: Date.now() });
+    localStorage.setItem('lifts', JSON.stringify(lifts));
+    document.getElementById('liftWeight').value = '';
+    document.getElementById('liftDate').value = '';
+    renderLifts();
+}
+
+function addGymPR() {
+    const movement = document.getElementById('gymMovement').value;
+    const reps = document.getElementById('gymReps').value;
+    const date = document.getElementById('gymDate').value;
+    
+    if (!reps || !date) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    gymnastics.push({ movement, reps, date, id: Date.now() });
+    localStorage.setItem('gymnastics', JSON.stringify(gymnastics));
+    document.getElementById('gymReps').value = '';
+    document.getElementById('gymDate').value = '';
+    renderGymnastics();
+}
+
+function addWodPR() {
+    const name = document.getElementById('wodName').value;
+    const time = document.getElementById('wodTime').value;
+    const date = document.getElementById('wodDate').value;
+    
+    if (!time || !date) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    wods.push({ name, time, date, id: Date.now() });
+    localStorage.setItem('wods', JSON.stringify(wods));
+    document.getElementById('wodTime').value = '';
+    document.getElementById('wodDate').value = '';
+    renderWods();
+}
+
+function deletePR(type, id) {
+    if (!confirm('Delete this PR?')) return;
+    
+    if (type === 'lift') {
+        lifts = lifts.filter(l => l.id !== id);
+        localStorage.setItem('lifts', JSON.stringify(lifts));
+        renderLifts();
+    } else if (type === 'gym') {
+        gymnastics = gymnastics.filter(g => g.id !== id);
+        localStorage.setItem('gymnastics', JSON.stringify(gymnastics));
+        renderGymnastics();
+    } else {
+        wods = wods.filter(w => w.id !== id);
+        localStorage.setItem('wods', JSON.stringify(wods));
+        renderWods();
+    }
+}
+
+function renderLifts() {
+    const list = document.getElementById('liftsList');
+    if (lifts.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏋️</div><p>No lifting PRs yet. Log your first one above!</p></div>';
+        return;
+    }
+    
+    list.innerHTML = lifts.sort((a,b) => new Date(b.date) - new Date(a.date)).map(lift => `
+        <div class="pr-item">
+            <div class="pr-info">
+                <h4>${lift.movement}</h4>
+                <p>${new Date(lift.date).toLocaleDateString()}</p>
+            </div>
+            <div class="pr-value">${lift.weight} lbs</div>
+            <button class="delete-btn" onclick="deletePR('lift', ${lift.id})">Delete</button>
+        </div>
+    `).join('');
+}
+
+function renderGymnastics() {
+    const list = document.getElementById('gymList');
+    if (gymnastics.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🤸</div><p>No gymnastics PRs yet. Log your first one above!</p></div>';
+        return;
+    }
+    
+    list.innerHTML = gymnastics.sort((a,b) => new Date(b.date) - new Date(a.date)).map(gym => `
+        <div class="pr-item">
+            <div class="pr-info">
+                <h4>${gym.movement}</h4>
+                <p>${new Date(gym.date).toLocaleDateString()}</p>
+            </div>
+            <div class="pr-value">${gym.reps} reps</div>
+            <button class="delete-btn" onclick="deletePR('gym', ${gym.id})">Delete</button>
+        </div>
+    `).join('');
+}
+
+function renderWods() {
+    const list = document.getElementById('wodsList');
+    if (wods.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏱️</div><p>No WOD PRs yet. Log your first one above!</p></div>';
+        return;
+    }
+    
+    list.innerHTML = wods.sort((a,b) => new Date(b.date) - new Date(a.date)).map(wod => `
+        <div class="pr-item">
+            <div class="pr-info">
+                <h4>${wod.name}</h4>
+                <p>${new Date(wod.date).toLocaleDateString()}</p>
+            </div>
+            <div class="pr-value">${wod.time}</div>
+            <button class="delete-btn" onclick="deletePR('wod', ${wod.id})">Delete</button>
+        </div>
+    `).join('');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('liftDate').valueAsDate = new Date();
+    document.getElementById('gymDate').valueAsDate = new Date();
+    document.getElementById('wodDate').valueAsDate = new Date();
+    renderLifts();
+    renderGymnastics();
+    renderWods();
+});
+</script>
+
+</body>
+</html>
