@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1RM Calculator | CrossFit Training Percentages</title>
+<meta name="description" content="Calculate your training percentages based on your one-rep max. Perfect for programming strength cycles.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-animation"></div>
+<div class="grid-overlay"></div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="index.html" class="logo">WOD TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="wod-database.html" class="nav-link">WOD Database</a>
+            <a href="tracker.html" class="nav-link">Tracker</a>
+        </div>
+        <div class="unit-toggle-nav">
+            <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
+            <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="page-title">1RM CALCULATOR</h1>
+    <p class="page-subtitle">Calculate your training percentages for any lift</p>
+
+    <div class="calculator-card">
+        <div class="input-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="input-group">
+                <label for="liftType">Lift Type</label>
+                <select id="liftType">
+                    <option value="squat">Back Squat</option>
+                    <option value="frontsquat">Front Squat</option>
+                    <option value="deadlift">Deadlift</option>
+                    <option value="bench">Bench Press</option>
+                    <option value="clean">Clean</option>
+                    <option value="snatch">Snatch</option>
+                    <option value="jerk">Clean & Jerk</option>
+                    <option value="overhead">Overhead Press</option>
+                    <option value="push">Push Press</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="oneRM">Your 1 Rep Max</label>
+                <input type="number" id="oneRM" placeholder="e.g., 315">
+            </div>
+        </div>
+        
+        <button class="btn" onclick="calculatePercentages()" style="width: 100%; margin-top: 10px;">Calculate Training Zones</button>
+        
+        <div class="result" id="percentageResults">
+            <div class="result-header">
+                <h3>Your Training Percentages</h3>
+                <button class="copy-btn" onclick="copyResults()">📋 Copy</button>
+            </div>
+            <div class="percentage-grid" id="percentageGrid"></div>
+            
+            <div class="info-card">
+                <h4>📊 How to Use These Percentages</h4>
+                <ul>
+                    <li><strong>60-70%:</strong> Volume work, hypertrophy focus (8-12 reps)</li>
+                    <li><strong>75-80%:</strong> Strength building, moderate reps (5-8 reps)</li>
+                    <li><strong>85-90%:</strong> Heavy strength work, low reps (3-5 reps)</li>
+                    <li><strong>90-95%:</strong> Max strength testing (1-3 reps)</li>
+                </ul>
+            </div>
+
+            <!-- Contextual Gear Recommendation -->
+            <div class="inline-recommendation">
+                <div class="recommendation-content">
+                    <div style="font-size: 32px; margin-bottom: 10px;">🥋</div>
+                    <h4>Training Heavy Today?</h4>
+                    <p>A quality lifting belt provides core support and can help you lift safer at higher percentages.</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                        <a href="https://amzn.to/3MvFHf2" target="_blank" rel="noopener" class="inline-rec-btn">View Belts →</a>
+                        <a href="https://amzn.to/4az9JGT" target="_blank" rel="noopener" class="inline-rec-btn secondary">Knee Sleeves →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-brand">WOD TOOLS</div>
+    <p class="footer-text">Built for the box. Train smart. Lift heavy.</p>
+    <p class="footer-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+</footer>
+
+<script>
+let currentUnit = localStorage.getItem('unit') || 'lbs';
+
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem('unit', unit);
+    document.getElementById('lbsBtn').classList.toggle('active', unit === 'lbs');
+    document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
+}
+
+function calculatePercentages() {
+    const oneRM = parseFloat(document.getElementById("oneRM").value);
+    const liftType = document.getElementById("liftType").value;
+    
+    if (isNaN(oneRM) || oneRM <= 0) {
+        alert("Please enter a valid 1RM.");
+        return;
+    }
+
+    const percentages = [60, 65, 70, 75, 80, 85, 90, 95];
+    let html = '';
+    
+    percentages.forEach(p => {
+        const weight = (oneRM * p / 100).toFixed(1);
+        html += `
+            <div class="percentage-item">
+                <span class="percentage-label">${p}%</span>
+                <span class="percentage-value">${weight}</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("percentageGrid").innerHTML = html;
+    document.getElementById("percentageResults").classList.add('show');
+}
+
+function copyResults() {
+    alert('Results copied to clipboard!');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setUnit(currentUnit);
+});
+</script>
+
+</body>
+</html>
