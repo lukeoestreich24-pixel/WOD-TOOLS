@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rep Max Estimator | Calculate Your 1RM</title>
+<meta name="description" content="Estimate your 1RM from submaximal lifts using the proven Epley formula.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-animation"></div>
+<div class="grid-overlay"></div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="index.html" class="logo">WOD TOOLS</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="wod-database.html" class="nav-link">WOD Database</a>
+            <a href="tracker.html" class="nav-link">Tracker</a>
+        </div>
+        <div class="unit-toggle-nav">
+            <button id="lbsBtn" class="active" onclick="setUnit('lbs')">LBS</button>
+            <button id="kgBtn" onclick="setUnit('kg')">KG</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="page-title">REP MAX ESTIMATOR</h1>
+    <p class="page-subtitle">Estimate your 1RM without maxing out</p>
+
+    <div class="calculator-card">
+        <div class="predictor-intro">
+            <h3>🎯 How This Works</h3>
+            <p>This calculator uses the Epley formula to estimate your one-rep max based on a submaximal lift. Most accurate with 3-8 reps. The closer you are to failure, the more accurate the estimate.</p>
+        </div>
+
+        <div class="input-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="input-group">
+                <label for="weightLifted">Weight Lifted</label>
+                <input type="number" id="weightLifted" placeholder="e.g., 225">
+            </div>
+            
+            <div class="input-group">
+                <label for="repsCompleted">Reps Completed</label>
+                <input type="number" id="repsCompleted" placeholder="e.g., 8">
+            </div>
+        </div>
+        
+        <button class="btn" onclick="estimateOneRM()" style="width: 100%; margin-top: 10px;">Estimate My 1RM</button>
+        
+        <div class="result" id="repResults">
+            <div class="result-header">
+                <h3>Estimated Maximum</h3>
+                <button class="copy-btn" onclick="copyResults()">📋 Copy</button>
+            </div>
+            <div id="repResultContent"></div>
+
+            <div class="info-card">
+                <h4>💡 Understanding Your Estimate</h4>
+                <ul>
+                    <li><strong>Most accurate:</strong> 3-8 rep range taken close to failure</li>
+                    <li><strong>Less accurate:</strong> Very high reps (12+) or reps not close to failure</li>
+                    <li><strong>Test periodically:</strong> Actual 1RM testing confirms true max strength</li>
+                    <li><strong>Use for programming:</strong> Plan cycles around estimated numbers</li>
+                </ul>
+            </div>
+
+            <!-- Contextual Product Recommendation -->
+            <div class="inline-recommendation">
+                <div class="recommendation-content">
+                    <div style="font-size: 32px; margin-bottom: 10px;">🦵</div>
+                    <h4>Protect Your Knees</h4>
+                    <p>Testing maxes puts significant stress on joints. Knee sleeves provide warmth and compression for safer heavy lifting.</p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                        <a href="https://amzn.to/4az9JGT" target="_blank" rel="noopener" class="inline-rec-btn">7mm Sleeves →</a>
+                        <a href="https://amzn.to/4tDovVO" target="_blank" rel="noopener" class="inline-rec-btn secondary">Compression →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-brand">WOD TOOLS</div>
+    <p class="footer-text">Built for the box. Train smart. Lift heavy.</p>
+    <p class="footer-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+</footer>
+
+<script>
+let currentUnit = localStorage.getItem('unit') || 'lbs';
+
+function setUnit(unit) {
+    currentUnit = unit;
+    localStorage.setItem('unit', unit);
+    document.getElementById('lbsBtn').classList.toggle('active', unit === 'lbs');
+    document.getElementById('kgBtn').classList.toggle('active', unit === 'kg');
+}
+
+function estimateOneRM() {
+    const weight = parseFloat(document.getElementById("weightLifted").value);
+    const reps = parseInt(document.getElementById("repsCompleted").value);
+    
+    if (isNaN(weight) || weight <= 0 || isNaN(reps) || reps <= 0) {
+        alert("Please enter valid weight and reps.");
+        return;
+    }
+
+    const oneRM = weight * (1 + reps / 30);
+    
+    let html = `
+        <div class="big-number">
+            <div class="big-number-value">${oneRM.toFixed(1)}</div>
+            <div class="big-number-label">Estimated 1RM (${currentUnit})</div>
+        </div>
+        <div class="percentage-grid">
+    `;
+    
+    [70, 75, 80, 85, 90, 95].forEach(p => {
+        const pWeight = (oneRM * p / 100).toFixed(1);
+        html += `
+            <div class="percentage-item">
+                <span class="percentage-label">${p}%</span>
+                <span class="percentage-value">${pWeight}</span>
+            </div>
+        `;
+    });
+    
+    html += `</div>`;
+    
+    document.getElementById("repResultContent").innerHTML = html;
+    document.getElementById("repResults").classList.add('show');
+}
+
+function copyResults() {
+    alert('Results copied!');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setUnit(currentUnit);
+});
+</script>
+
+</body>
+</html>
